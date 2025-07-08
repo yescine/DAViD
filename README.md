@@ -23,9 +23,9 @@ The dataset contains TODO samples. Each sample is made up of:
 The camera text file includes the standard intrinsic matrix:
 
 ```
-f_x   0 c_x
-  0 f_y c_y
-  0   0   1
+f_x 0.0 c_x
+0.0 f_y c_y
+0.0 0.0 1.0
 ```
 
 Where `f_x`, and `f_y` are in pixel units.
