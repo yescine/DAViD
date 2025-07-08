@@ -4,9 +4,7 @@ The repo accompanies the ICCV 2025 paper [DAViD: Data-efficient and Accurate Vis
 
 ## The SynthHuman Dataset
 
-<img src="docs/img/SynthHuman-F.jpg" alt="Face Data" width="33%"/>
-<img src="docs/img/SynthHuman-UB.jpg" alt="Upper Body Data" width="33%"/>
-<img src="docs/img/SynthHuman-FB.jpg" alt="Full Body Data" width="33%"/>
+<img src="docs/img/SynthHuman-F.jpg" alt="Face Data" width="33%"/><img src="docs/img/SynthHuman-UB.jpg" alt="Upper Body Data" width="33%"/><img src="docs/img/SynthHuman-FB.jpg" alt="Full Body Data" width="33%"/>
 
 The SynthHuman dataset contains approximately 300,000 images of synthetic humans with ground-truth annotations for foreground alpha masks, absolute depth, surface normals and camera intrinsics. There are approximately 100,000 images for each of three camera scenarios: face, upper-body and full-body. The data is generated using the latest version of our synthetic data generation pipeline, which has been used to create a number of datasets: [Face Synthetics](https://microsoft.github.io/FaceSynthetics/), [SimpleEgo](https://aka.ms/SimpleEgo) and [SynthMoCap](https://aka.ms/SynthMoCap). Ground-truth annotations are per-pixel with perfect accuracy due to the graphics-based rendering pipeline:
 
