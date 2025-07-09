@@ -59,37 +59,37 @@ We release models for the following tasks:
     <tr>
       <td rowspan="2">Soft Foreground Segmentation</td>
       <td>Base</td>
-      <td><a href="">Download</a></td>
+      <td><a href="https://facesyntheticspubwedata.z6.web.core.windows.net/iccv-2025/models/foreground-segmentation-model-vitb16_384.onnx">Download</a></td>
       <td rowspan="2"><a href="./model_cards/soft_foreground_segmentation_model.md">Model Card</a></td>
     </tr>
     <tr>
       <td>Large</td>
-      <td><a href="">Download</a></td>
+      <td><a href="https://facesyntheticspubwedata.z6.web.core.windows.net/iccv-2025/models/foreground-segmentation-model-vitl16_384.onnx">Download</a></td>
     </tr>
     <tr>
       <td rowspan="2">Relative Depth Estimation</td>
       <td>Base</td>
-      <td><a href="">Download</a></td>
+      <td><a href="https://facesyntheticspubwedata.z6.web.core.windows.net/iccv-2025/models/depth-model-vitb16_384.onnx">Download</a></td>
       <td rowspan="2"><a href="./model_cards/depth_model.md">Model Card</a></td>
     </tr>
     <tr>
       <td>Large</td>
-      <td><a href="">Download</a></td>
+      <td><a href="https://facesyntheticspubwedata.z6.web.core.windows.net/iccv-2025/models/depth-model-vitl16_384.onnx">Download</a></td>
     </tr>
     <tr>
       <td rowspan="2">Surface Normal Estimation</td>
       <td>Base</td>
-      <td><a href="">Download</a></td>
+      <td><a href="https://facesyntheticspubwedata.z6.web.core.windows.net/iccv-2025/models/normal-model-vitb16_384.onnx">Download</a></td>
       <td rowspan="2"><a href="./model_cards/surface_normal_model.md">Model Card</a></td>
     </tr>
     <tr>
       <td>Large</td>
-      <td><a href="">Download</a></td>
+      <td><a href="https://facesyntheticspubwedata.z6.web.core.windows.net/iccv-2025/models/normal-model-vitl16_384.onnx">Download</a></td>
     </tr>
     <tr>
       <td rowspan="1">Multi-Task Model</td>
             <td>Large</td>
-      <td><a href="">Download</a></td>
+      <td><a href="https://facesyntheticspubwedata.z6.web.core.windows.net/iccv-2025/models/multi-task-model-vitl16_384.onnx">Download</a></td>
       <td rowspan="1"><a href="./model_cards/multi_task_model.md">Model Card</a></td>
     </tr>
   </tbody>
