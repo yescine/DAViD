@@ -5,7 +5,7 @@ The repo accompanies the ICCV 2025 paper [DAViD: Data-efficient and Accurate Vis
 ## ⚖️ License
 This repository contains components under different licenses:
 
-- The SynthHuman dataset is available for non-commercial use, refer to [TODO.txt]() for details.
+- The SynthHuman dataset is available for non-commercial use, refer to [CDLA-2.0](./LICENSE-CDLA-2.0.txt) for details.
 - The models and runtime code are released under the permissive [LICENSE-MIT.txt](./LICENSE-MIT.txt).
 
 ## 📊 The SynthHuman Dataset
@@ -45,8 +45,8 @@ To download the dataset simply run `download_data.py TARGET_DIRECTORY [--single-
 You can optionally download a single sample or a single chunk to quickly take a look at the data.
 
 ### Dataset License
-The SynthHuman dataset is licensed under the [CDLA-2.0  license](https://cdla.dev/permissive-2-0/).
-The download script and other code is licensed under the [LICENSE-MIT.txt](./LICENSE-MIT.txt).
+The SynthHuman dataset is licensed under the [CDLA-2.0](./LICENSE-CDLA-2.0.txt). The download script and other code is licensed under the [LICENSE-MIT.txt](./LICENSE-MIT.txt).
+
 
 ## 🔓 Released Models
 
@@ -101,8 +101,50 @@ We release models for the following tasks:
 </table>
 
 
-### Model License
 
+## 🚀 Run the Demo
+
+This demo supports running:
+
+- Relative depth estimation
+- Soft foreground segmentation
+- Surface normal estimation
+
+To install the requirements for running demo:
+```bash
+pip install -r requirement.txt
+```
+
+You can use either run:
+
+1. A multi-task model that performs all tasks simultaneously
+
+```bash
+python demo.py \
+  --image path/to/input.jpg \
+  --multitask-model models/multitask.onnx
+```
+2. Or using individual models
+
+```bash
+python demo.py \
+  --image path/to/input.jpg \
+  --depth-model models/depth.onnx \
+  --foreground-model models/foreground.onnx \
+  --normal-model models/normal.onnx
+```
+
+🧠 **Notes:**
+- The script expects ONNX models. Ensure the model paths are correct.
+- If both multi-task and individual models are provided, results from both will be shown and compared.
+- Foreground masks are used for improved visualization of depth and normals.
+
+Here is an example output image after running the demo:
+
+![](img/demo_result.png)
+
+
+### Model License
 DAViD models, and codes are licensed under the [LICENSE-MIT.txt](./LICENSE-MIT.txt).
 
 ## 📖 Citation
