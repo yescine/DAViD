@@ -6,7 +6,7 @@ The repo accompanies the ICCV 2025 paper [DAViD: Data-efficient and Accurate Vis
 This repository contains components under different licenses:
 
 - The SynthHuman dataset is available for non-commercial use, refer to [CDLA-2.0](./LICENSE-CDLA-2.0.txt) for details.
-- The models and runtime code are released under the permissive [LICENSE-MIT.txt](./LICENSE-MIT.txt).
+- The models and runtime code are released under the permissive [MIT](./LICENSE-MIT.txt).
 
 ## 📊 The SynthHuman Dataset
 
@@ -145,7 +145,7 @@ Here is an example output image after running the demo:
 
 
 ### Model License
-DAViD models, and codes are licensed under the [LICENSE-MIT.txt](./LICENSE-MIT.txt).
+DAViD models, and codes are licensed under the [MIT](./LICENSE-MIT.txt).
 
 ## 📖 Citation
 
