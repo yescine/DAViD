@@ -2,7 +2,13 @@
 
 The repo accompanies the ICCV 2025 paper [DAViD: Data-efficient and Accurate Vision Models from Synthetic Data](https://microsoft.github.io/DAViD) and contains instructions for downloading and using the SynthHuman dataset and models described in the paper.
 
-## The SynthHuman Dataset
+## ⚖️ License
+This repository contains components under different licenses:
+
+- The SynthHuman dataset is available for non-commercial use, refer to [CDLA-2.0](./LICENSE-CDLA-2.0.txt) for details.
+- The models and runtime code are released under the permissive [MIT](./LICENSE-MIT.txt).
+
+## 📊 The SynthHuman Dataset
 
 <img src="docs/img/SynthHuman-F.jpg" alt="Face Data" width="33%"/><img src="docs/img/SynthHuman-UB.jpg" alt="Upper Body Data" width="33%"/><img src="docs/img/SynthHuman-FB.jpg" alt="Full Body Data" width="33%"/>
 
@@ -38,21 +44,110 @@ Each zip file is approximately 8.75GB in size and contains 5000 samples.
 To download the dataset simply run `download_data.py TARGET_DIRECTORY [--single-sample] [--single-chunk]` which will download and unzip the zips into the target folder.
 You can optionally download a single sample or a single chunk to quickly take a look at the data.
 
-### License
+### Dataset License
+The SynthHuman dataset is licensed under the [CDLA-2.0](./LICENSE-CDLA-2.0.txt). The download script and other code is licensed under the [MIT](./LICENSE-MIT.txt).
 
-The SynthHuman dataset is licensed under the [CDLA-2.0  license](https://cdla.dev/permissive-2-0/).
-The download script and other code is licensed under the [MIT license](https://mit-license.org/).
 
-## DAViD Models
+## 🔓 Released Models
 
-TODO
+We release models for the following tasks:
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Version</th>
+      <th>ONNX Model</th>
+      <th>Model Card</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="2">Soft Foreground Segmentation</td>
+      <td>Base</td>
+      <td><a href="https://facesyntheticspubwedata.z6.web.core.windows.net/iccv-2025/models/foreground-segmentation-model-vitb16_384.onnx">Download</a></td>
+      <td rowspan="2"><a href="./model_cards/soft_foreground_segmentation_model.md">Model Card</a></td>
+    </tr>
+    <tr>
+      <td>Large</td>
+      <td><a href="https://facesyntheticspubwedata.z6.web.core.windows.net/iccv-2025/models/foreground-segmentation-model-vitl16_384.onnx">Download</a></td>
+    </tr>
+    <tr>
+      <td rowspan="2">Relative Depth Estimation</td>
+      <td>Base</td>
+      <td><a href="https://facesyntheticspubwedata.z6.web.core.windows.net/iccv-2025/models/depth-model-vitb16_384.onnx">Download</a></td>
+      <td rowspan="2"><a href="./model_cards/depth_model.md">Model Card</a></td>
+    </tr>
+    <tr>
+      <td>Large</td>
+      <td><a href="https://facesyntheticspubwedata.z6.web.core.windows.net/iccv-2025/models/depth-model-vitl16_384.onnx">Download</a></td>
+    </tr>
+    <tr>
+      <td rowspan="2">Surface Normal Estimation</td>
+      <td>Base</td>
+      <td><a href="https://facesyntheticspubwedata.z6.web.core.windows.net/iccv-2025/models/normal-model-vitb16_384.onnx">Download</a></td>
+      <td rowspan="2"><a href="./model_cards/surface_normal_model.md">Model Card</a></td>
+    </tr>
+    <tr>
+      <td>Large</td>
+      <td><a href="https://facesyntheticspubwedata.z6.web.core.windows.net/iccv-2025/models/normal-model-vitl16_384.onnx">Download</a></td>
+    </tr>
+    <tr>
+      <td rowspan="1">Multi-Task Model</td>
+            <td>Large</td>
+      <td><a href="https://facesyntheticspubwedata.z6.web.core.windows.net/iccv-2025/models/multi-task-model-vitl16_384.onnx">Download</a></td>
+      <td rowspan="1"><a href="./model_cards/multi_task_model.md">Model Card</a></td>
+    </tr>
+  </tbody>
+</table>
 
-### License
 
-The DAViD models are licensed under the TODO.
-The runtime scripts and other code are licensed under the [MIT license](https://mit-license.org/).
 
-## Citation
+## 🚀 Run the Demo
+
+This demo supports running:
+
+- Relative depth estimation
+- Soft foreground segmentation
+- Surface normal estimation
+
+To install the requirements for running demo:
+```bash
+pip install -r requirement.txt
+```
+
+You can use either run:
+
+1. A multi-task model that performs all tasks simultaneously
+
+```bash
+python demo.py \
+  --image path/to/input.jpg \
+  --multitask-model models/multitask.onnx
+```
+2. Or using individual models
+
+```bash
+python demo.py \
+  --image path/to/input.jpg \
+  --depth-model models/depth.onnx \
+  --foreground-model models/foreground.onnx \
+  --normal-model models/normal.onnx
+```
+
+🧠 **Notes:**
+- The script expects ONNX models. Ensure the model paths are correct.
+- If both multi-task and individual models are provided, results from both will be shown and compared.
+- Foreground masks are used for improved visualization of depth and normals.
+
+Here is an example output image after running the demo:
+
+![](img/demo_result.png)
+
+
+### Model License
+DAViD models, and codes are licensed under the [MIT](./LICENSE-MIT.txt).
+
+## 📖 Citation
 
 If you use the SynthHuman Dataset or any of the DAViD models in your research, please cite the following:
 
