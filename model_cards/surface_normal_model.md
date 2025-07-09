@@ -29,7 +29,7 @@ Estimating surface normal from a single image of human.
 
 ### Out-of-Scope Use
 
-The models are trained for estimating surface normals for humans in the image and not suitable for other objects.
+The models are specifically trained for human subjects in images and are not suitable for other object categories.
 
 ## Bias, Risks, and Limitations
 

@@ -19,8 +19,8 @@ Monocular relative depth estimation model.
 
 ### Model Sources
 
-- **Repository:** aka.ms/DAViD
-- **Paper:**  Saleh et al., DAViD: Data-efficient and Accurate Vision Models from Synthetic Data, ICCV 2025
+- **Repository:** [aka.ms/DAViD](aka.ms/DAViD)
+- **Paper:**  [Saleh et al., DAViD: Data-efficient and Accurate Vision Models from Synthetic Data, ICCV 2025]()
 
 ## Uses
 
@@ -30,7 +30,7 @@ Estimating relative depth from a single image of human.
 
 ### Out-of-Scope Use
 
-The models are trained for estimating relative depth maps for humans in the image and not suitable for other objects.
+The models are specifically trained for human subjects in images and are not suitable for other object categories.
 
 ## Bias, Risks, and Limitations
 
@@ -131,7 +131,7 @@ To evaluate depth estimation models, we report the mean absolute value of the re
   </thead>
   <tbody>
     <tr>
-      <td><strong>Ours-Base</strong></td>
+      <td><strong>DAViD-Base</strong></td>
       <td style="text-align:center;">344</td>
       <td style="text-align:center;">0.12B</td>
       <td style="text-align:center;">0.142</td>
@@ -146,7 +146,7 @@ To evaluate depth estimation models, we report the mean absolute value of the re
       <td style="text-align:center;">0.014</td>
     </tr>
     <tr>
-      <td><strong>Ours-Large</strong></td>
+      <td><strong>DAViD-Large</strong></td>
       <td style="text-align:center;">663</td>
       <td style="text-align:center;">0.34B</td>
       <td style="text-align:center;">0.140</td>

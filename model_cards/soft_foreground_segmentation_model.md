@@ -10,7 +10,7 @@ The images can come from various sources, such as photos, videos, or webcams and
 
 ### Model Description
 
-Surface normal estimation model.
+Soft foreground segmentation.
 
 - **Developed by:** DAViD's authors
 - **Funded by:** Microsoft
@@ -25,8 +25,7 @@ Surface normal estimation model.
 ## Uses
 
 ### Direct Use
-Segment soft foregrounds from a single human image.
-
+Segmenting the human foreground from a single image (soft mask).
 
 ### Out-of-Scope Use
 
@@ -70,7 +69,7 @@ See the paper.
     - Pretrained backbone: True
     - Input size: 512x512 px.
     - Input format: the input image is expected to be BGR with floats in the range [0, 1]
-    - Output format: Surface normal map (1, 1, 512, 512)
+    - Output format: Soft foreground mask (1, 1, 512, 512)
 
 See the paper for more information.
 
@@ -89,7 +88,7 @@ See the paper for more information.
 #### Testing Data
 
 
-We evaluate our soft foreground segmentation model on [PhotoMatte85](), [PPM-100](), and [P3M]() datasets. See the paper for further details.
+We evaluate our soft foreground segmentation model on [PhotoMatte85](https://grail.cs.washington.edu/projects/background-matting-v2/#/datasets), [PPM-100](https://github.com/ZHKKKe/PPM), and [P3M](https://github.com/JizhiziLi/P3M) datasets. See the paper for further details.
 
 #### Metrics
 
@@ -99,7 +98,6 @@ To evaluate soft foreground segmentation model, we report the following metrics:
 **SAD (Sum of Absolute Differences)**: Measures the total absolute difference between the predicted and ground truth masks, scaled by a factor of 1000. Lower values indicate better alignment between predictions and ground truth.
 
 **MSE (Mean Squared Error)**: Computes the average squared difference per pixel between the predicted and ground truth masks. Lower values reflect better prediction accuracy.
-
 
 **SAD (Trimap)**: Similar to SAD but calculated only within the uncertain regions defined by the trimap (i.e., where the trimap value equals 128). Lower values are better.
 
