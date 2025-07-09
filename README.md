@@ -45,7 +45,7 @@ To download the dataset simply run `download_data.py TARGET_DIRECTORY [--single-
 You can optionally download a single sample or a single chunk to quickly take a look at the data.
 
 ### Dataset License
-The SynthHuman dataset is licensed under the [CDLA-2.0](./LICENSE-CDLA-2.0.txt). The download script and other code is licensed under the [LICENSE-MIT.txt](./LICENSE-MIT.txt).
+The SynthHuman dataset is licensed under the [CDLA-2.0](./LICENSE-CDLA-2.0.txt). The download script and other code is licensed under the [MIT](./LICENSE-MIT.txt).
 
 
 ## 🔓 Released Models
