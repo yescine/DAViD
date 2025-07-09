@@ -51,7 +51,7 @@ We release models for the following tasks:
     <tr>
       <th>Task</th>
       <th>Version</th>
-      <th>Download</th>
+      <th>ONNX Model</th>
       <th>Model Card</th>
     </tr>
   </thead>
