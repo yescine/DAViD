@@ -15,7 +15,7 @@ Soft foreground segmentation.
 - **Developed by:** DAViD's authors
 - **Funded by:** Microsoft
 - **Model type:** DPT-based neural network (released as ONNX)
-- **License:** MIT
+- **License:** [MIT](../LICENSE-MIT.txt)
 
 ### Model Sources
 
