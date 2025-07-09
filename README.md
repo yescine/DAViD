@@ -40,11 +40,17 @@ You can optionally download a single sample or a single chunk to quickly take a 
 
 ### License
 
-The SynthHuman dataset is available for **non-commercial** use, refer to [LICENSE.txt](/LICENSE.txt) for details.
+The SynthHuman dataset is licensed under the [CDLA-2.0  license](https://cdla.dev/permissive-2-0/).
+The download script and other code is licensed under the [MIT license](https://mit-license.org/).
 
 ## DAViD Models
 
 TODO
+
+### License
+
+The DAViD models are licensed under the TODO.
+The runtime scripts and other code are licensed under the [MIT license](https://mit-license.org/).
 
 ## Citation
 
