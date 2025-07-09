@@ -1,12 +1,7 @@
 """Utility classes and functions for image processing and ROI operations."""
 
-from typing import Union, Any
 import numpy as np
 import cv2
-from onnxruntime import InferenceSession
-import onnx
-import json
-from pathlib import Path
 
 
 ONNX_EP = ["CUDAExecutionProvider", "CPUExecutionProvider"]
@@ -52,40 +47,6 @@ def preprocess_img(img: np.ndarray) -> np.ndarray:
     img = np.clip(img, 0, 1)
     return img.astype(np.float32)
 
-
-def get_metadata(
-    onnx_path_or_session: Union[Path, str, InferenceSession],
-) -> dict[str, Any]:
-    """Gets metadata for an ONNX model filepath or inference session.
-
-    Arguments:
-        onnx_path_or_session: The ONNX model file path or ONNX Runtime session.
-
-    Returns:
-        The metadata dictionary.
-
-    Raises:
-        TypeError: If the input is not a file path or ONNX Runtime session.
-    """
-    if isinstance(onnx_path_or_session, (str, Path)):
-        assert Path(onnx_path_or_session).is_file(), (
-            f"onnx model {onnx_path_or_session} not found"
-        )
-        onnx_model = onnx.load(str(onnx_path_or_session))
-        for prop in onnx_model.metadata_props:
-            if prop.key == "metadata":
-                return json.loads(prop.value)
-        return {}
-
-    if isinstance(onnx_path_or_session, InferenceSession):
-        custom_metadata_map = onnx_path_or_session.get_modelmeta().custom_metadata_map
-        if "metadata" in custom_metadata_map:
-            return json.loads(custom_metadata_map["metadata"])
-        return {}
-
-    raise TypeError(
-        f"{onnx_path_or_session} should be a file path or ONNX Runtime session"
-    )
 
 
 def prepare_image_for_model(

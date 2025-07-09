@@ -15,7 +15,6 @@ __all__ = [
     "prepare_image_for_model",
     "composite_model_output_to_image",
     "ONNX_EP",
-    "get_metadata",
     "ModelNotFoundError",
     "ModelError",
     "RelativeDepthEstimator",

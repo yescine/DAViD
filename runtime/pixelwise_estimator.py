@@ -6,7 +6,7 @@ from typing import Optional, Union
 import numpy as np
 from onnxruntime import InferenceSession
 
-from utils import get_metadata, preprocess_img, prepare_image_for_model
+from utils import preprocess_img, prepare_image_for_model
 from utils import ONNX_EP, ModelNotFoundError
 
 
@@ -63,12 +63,7 @@ class PixelwiseEstimator:
 
         self.onnx_model = onnx_model
 
-        self.metadata = get_metadata(onnx_model)
-
-        if "roi_size" in self.metadata:
-            roi_size = self.metadata["roi_size"]
-            assert roi_size[0] == roi_size[1], "dense models must use a square ROI."
-            self.roi_size = roi_size[0]
+        self.roi_size = 512
 
         self.onnx_sess = RuntimeSession(str(onnx_model), providers=providers)
 
