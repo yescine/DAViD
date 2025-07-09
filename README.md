@@ -38,10 +38,6 @@ Each zip file is approximately 8.75GB in size and contains 5000 samples.
 To download the dataset simply run `download_data.py TARGET_DIRECTORY [--single-sample] [--single-chunk]` which will download and unzip the zips into the target folder.
 You can optionally download a single sample or a single chunk to quickly take a look at the data.
 
-### License
-
-The SynthHuman dataset is available for **non-commercial** use, refer to [LICENSE.txt](/LICENSE.txt) for details.
-
 
 ## 🔓 Released Models
 
@@ -139,8 +135,14 @@ Here is an example output image after running the demo:
 ![](img/demo_result.png)
 
 
+## ⚖️ License
 
-## Citation
+This repository contains components under different licenses:
+
+- The SynthHuman dataset is available for **non-commercial** use, refer to [LICENSE-R-UDA.txt](/LICENSE-R-UDA.txt) for details.
+- The models and runtime code are released under the permissive [LICENSE-MIT.txt](./LICENSE-MIT.txt).
+
+## 📖 Citation
 
 If you use the SynthHuman Dataset or any of the DAViD models in your research, please cite the following:
 
