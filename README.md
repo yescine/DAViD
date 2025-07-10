@@ -15,7 +15,7 @@ This repository contains components under different licenses:
 
 The SynthHuman dataset contains approximately 300,000 images of synthetic humans with ground-truth annotations for foreground alpha masks, absolute depth, surface normals and camera intrinsics. There are approximately 100,000 images for each of three camera scenarios: face, upper-body and full-body. The data is generated using the latest version of our synthetic data generation pipeline, which has been used to create a number of datasets: [Face Synthetics](https://microsoft.github.io/FaceSynthetics/), [SimpleEgo](https://aka.ms/SimpleEgo) and [SynthMoCap](https://aka.ms/SynthMoCap). Ground-truth annotations are per-pixel with perfect accuracy due to the graphics-based rendering pipeline:
 
-<img src="docs/img/GT_annotations.jpg" alt="GT Annotations" width="50%"/>
+<img src="img/GT_annotations.jpg" alt="GT Annotations" width="50%"/>
 
 ### Data Format
 
