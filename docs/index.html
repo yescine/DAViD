@@ -62,7 +62,8 @@
                 <span><a href="https://lohit.dev">Lohit&nbsp;Petikam</a></span>
                 <span><a href="mailto:xianxiao@microsoft.com">Xiao-Xian</a></span>
                 <span><a href="mailto:acriminisi@microsoft.com">Antonio&nbsp;Criminisi</a></span>
-                <span><a href="https://scholar.google.com/citations?user=pDPdQq8AAAAJ">Thomas&nbsp;J&nbsp;Cashman</a></span>
+                <span><a
+                        href="https://scholar.google.com/citations?user=pDPdQq8AAAAJ">Thomas&nbsp;J&nbsp;Cashman</a></span>
                 <span><a href="mailto:tabaltru@microsoft.com">Tadas&nbsp;Baltru&scaron;aitis</a></span>
             </p>
         </div>
@@ -120,14 +121,21 @@
     <section class="section pt-0">
         <div class="container is-max-desktop">
             <h1 class="title is-4">
-                 SynthHuman: Human-centric Synthetic Data
+                SynthHuman: Human-centric Synthetic Data
             </h1>
             <div class="content has-text-justified-desktop">
-                <p>To train our models, we use exclusively synthetic data. Specifically, we use the data generation pipeline of <a href="https://microsoft.github.io/SynthMoCap/">Hewitt et al.</a> incorporating the updated face model of <a href="https://dl.acm.org/doi/full/10.1145/3681758.3697987">Petikam et al.</a> to create a human-centric synthetic dataset with a high degree of realism, as well as high-fidelity ground-truth annotations.
-Our SynthHuman dataset contains 300K images of resolution 384 × 512, covering examples of faces, upper body, and full body scenarios equally.
-We design SynthHuman such that it is diverse in terms of poses, environments, lighting, and appearances, and not tailored to any specific evaluation set.
-This allows us to train models that generalize across a range of benchmark datasets, as well as on in-the-wild data.</p>
-                <div class="columns">
+                <p>To train our models, we use <i>exclusively</i> synthetic data. Specifically, we use the data generation
+                    pipeline of <a href="https://microsoft.github.io/SynthMoCap/">Hewitt et al.</a> incorporating the
+                    updated face model of <a href="https://dl.acm.org/doi/full/10.1145/3681758.3697987">Petikam et
+                        al.</a> to create a human-centric synthetic dataset with a high degree of realism, as well as
+                    high-fidelity ground-truth annotations.
+                    Our SynthHuman dataset contains 300K images of resolution 384&#215;512, covering examples of faces,
+                    upper body, and full body scenarios equally.
+                    We design SynthHuman such that it is diverse in terms of poses, environments, lighting, and
+                    appearances, and not tailored to any specific evaluation set.
+                    This allows us to train models that generalize across a range of benchmark datasets, as well as on
+                    in-the-wild data.</p>
+                <div class="columns is-gapless mb-1">
                     <div class="column is-hidden-mobile">
                         <img src="img/SynthHuman-F.jpg">
                     </div>
@@ -138,43 +146,45 @@ This allows us to train models that generalize across a range of benchmark datas
                         <img src="img/SynthHuman-FB.jpg">
                     </div>
                 </div>
-                <div>
-                    <p>Along with the RGB rendered image, each sample includes soft foreground mask, surface normals, and depth ground-truth annotations, used to train our models. </p>
-                    <div class="columns">
-                        <div>
-                            <video autoplay="" muted="" loop="" playsinline="">
-                            <source src="vid/sx_data.mp4" type="video/mp4">
-                        </video>
-                        </div>
+                <p>Along with the RGB rendered image, each sample includes soft foreground mask, surface normals,
+                    and depth ground-truth annotations, used to train our models. </p>
+                <video autoplay="" muted="" loop="" playsinline="">
+                    <source src="vid/sx_data.mp4" type="video/mp4">
+                </video>
+            </div>
+            <br>
+            <div class="container is-max-desktop">
+                <h1 class="title is-4">
+                    Architecture
+                </h1>
+                <div class="content has-text-justified-desktop">
+                    <p>
+                        We use a single model architecture (with varying number of output channels) to tackle the three
+                        dense prediction tasks.
+                        We adapt the <a href="https://arxiv.org/abs/2103.13413">dense prediction transformer (DPT)</a>
+                        to handle variable input resolutions efficiently. Using a single dataset and a single model
+                        architecture allows us to easily train a single model with three convolution heads to perform
+                        multiple task learning. This is particularly important to combine soft foreground segmentation
+                        with depth and normal estimation, as for human-centric tasks it is needed to separate the human
+                        from the background.
+                    </p>
+                    <video autoplay="" muted="" loop="" playsinline="">
+                        <source src="vid/architecture.mp4" type="video/mp4">
+                    </video>
                 </div>
             </div>
-        </div>
-        <br>
-        <div class="container is-max-desktop">
-            <h1 class="title is-4">
-                Architecture
-            </h1>
-            <div class="content has-text-justified-desktop">
-            <p>We use a single model architecture (with varying number of output channels) to tackle the three dense prediction tasks. 
-We adapt the <a href="https://arxiv.org/abs/2103.13413">dense prediction transformer (DPT)</a> to handle variable input resolutions efficiently. Using a single dataset and a single model architecture allows us to easily train a single model with three convolution heads to perform multiple task learning. This is particularly important to combine soft foreground segmentation with depth and normal estimation, as for human-centric tasks it is needed to separate the human from the background.</p>
-</div>
-            <div class="content has-text-justified-desktop">
-                <div class="columns">
-                            <video autoplay="" muted="" loop="" playsinline="">
-                            <source src="vid/architecture.mp4" type="video/mp4">
-                        </video>
-                </div>
-                
-            </div>
-        </div>
-        
+
     </section>
     <section class="section pt-0">
         <div class="container is-max-desktop">
-            <h1 class="title is-4">
-                Results
-            </h1>
+            <h1 class="title is-4">Results</h1>
             <div class="content has-text-justified-desktop">
+                <p>Our human-centric dense prediction model delivers high-quality, detailed results while achieving
+                    remarkable efficiency, running orders of magnitude faster than competing methods, with inference
+                    speeds as low as 21 milliseconds per frame (the large multi-task model on an NVIDIA A100). It
+                    reliably captures a wide range of human characteristics under diverse lighting conditions,
+                    preserving fine-grained details such as hair strands and subtle facial features. This demonstrates
+                    the model's robustness and accuracy in complex, real-world scenarios. </p>
                 <div class="columns is-gapless is-multiline">
                     <div class="column is-half-tablet is-one-third-desktop">
                         <video autoplay="" muted="" loop="" playsinline="">
@@ -207,7 +217,6 @@ We adapt the <a href="https://arxiv.org/abs/2103.13413">dense prediction transfo
                         </video>
                     </div>
                 </div>
-                <p>Our human-centric dense prediction model delivers high-quality, detailed results while achieving remarkable efficiency, running orders of magnitude faster than competing methods, with inference speeds as low as 21 milliseconds per frame (the large multi-task model on an NVIDIA A100). It reliably captures a wide range of human characteristics under diverse lighting conditions, preserving fine-grained details such as hair strands and subtle facial features. This demonstrates the model’s robustness and accuracy in complex, real-world scenarios. </p>
             </div>
         </div>
     </section>
