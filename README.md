@@ -2,13 +2,6 @@
 
 The repo accompanies the ICCV 2025 paper [DAViD: Data-efficient and Accurate Vision Models from Synthetic Data](https://microsoft.github.io/DAViD) and contains instructions for downloading and using the SynthHuman dataset and models described in the paper.
 
-## ⚖️ License
-
-This repository contains components under different licenses:
-
-- The SynthHuman dataset is available for non-commercial use, refer to [CDLA-2.0](./LICENSE-CDLA-2.0.txt) for details.
-- The models and runtime code are released under the permissive [MIT](./LICENSE-MIT.txt).
-
 ## 📊 The SynthHuman Dataset
 
 <img src="docs/img/SynthHuman-F.jpg" alt="Face Data" width="33%"/><img src="docs/img/SynthHuman-UB.jpg" alt="Upper Body Data" width="33%"/><img src="docs/img/SynthHuman-FB.jpg" alt="Full Body Data" width="33%"/>
@@ -47,7 +40,8 @@ You can optionally download a single sample or a single chunk to quickly take a 
 
 ### Dataset License
 
-The SynthHuman dataset is licensed under the [CDLA-2.0](./LICENSE-CDLA-2.0.txt). The download script and other code is licensed under the [MIT](./LICENSE-MIT.txt).
+The SynthHuman dataset is licensed under the [CDLA-2.0](./LICENSE-CDLA-2.0.txt).
+The download script and other code is licensed under the [MIT License](./LICENSE-MIT.txt).
 
 ## 🔓 Released Models
 
@@ -147,7 +141,7 @@ Here is an example output image after running the demo:
 
 ### Model License
 
-DAViD models, and codes are licensed under the [MIT](./LICENSE-MIT.txt).
+DAViD models, and codes are licensed under the [MIT License](./LICENSE-MIT.txt).
 
 ## 📖 Citation
 
