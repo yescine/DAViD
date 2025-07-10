@@ -37,6 +37,7 @@ This can be easily loaded with `np.loadtxt(path_to_camera_txt)`.
 
 The dataset is broken in 60 zip files to make downloading easier.
 Each zip file contains 5000 samples and has a maximum size of 8.75GB.
+The total download size is approximately 330GB.
 To download the dataset simply run `download_data.py TARGET_DIRECTORY [--single-sample] [--single-chunk]` which will download and unzip the zips into the target folder.
 You can optionally download a single sample or a single chunk to quickly take a look at the data.
 
