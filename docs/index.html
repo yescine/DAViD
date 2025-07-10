@@ -120,10 +120,14 @@
     <section class="section pt-0">
         <div class="container is-max-desktop">
             <h1 class="title is-4">
-                SynthHuman dataset
+                 SynthHuman: Human-centric Synthetic Data
             </h1>
             <div class="content has-text-justified-desktop">
-                <div class="columns is-gapless">
+                <p>To train our models, we use exclusively synthetic data. Specifically, we use the data generation pipeline of <a href="https://microsoft.github.io/SynthMoCap/">Hewitt et al.</a> incorporating the updated face model of <a href="https://dl.acm.org/doi/full/10.1145/3681758.3697987">Petikam et al.</a> to create a human-centric synthetic dataset with a high degree of realism, as well as high-fidelity ground-truth annotations.
+Our SynthHuman dataset contains 300K images of resolution 384 × 512, covering examples of faces, upper body, and full body scenarios equally.
+We design SynthHuman such that it is diverse in terms of poses, environments, lighting, and appearances, and not tailored to any specific evaluation set.
+This allows us to train models that generalize across a range of benchmark datasets, as well as on in-the-wild data.</p>
+                <div class="columns">
                     <div class="column is-hidden-mobile">
                         <img src="img/SynthHuman-F.jpg">
                     </div>
@@ -134,19 +138,32 @@
                         <img src="img/SynthHuman-FB.jpg">
                     </div>
                 </div>
-                <p>Some Text</p>
+                <div>
+                    <p>Along with the RGB rendered image, each sample includes soft foreground mask, surface normals, and depth ground-truth annotations, used to train our models. </p>
+                    <div class="columns">
+                        <div>
+                            <img src="img/sx_data.gif" style="display: block; margin: 0 auto;">
+                        </div>
+                </div>
             </div>
         </div>
-    </section>
-    <section class="section pt-0">
+        <br>
         <div class="container is-max-desktop">
             <h1 class="title is-4">
-                Training human-centric vision models
+                Architecture
             </h1>
             <div class="content has-text-justified-desktop">
-                <p>Some Text</p>
+            <p>We use a single model architecture (with varying number of output channels) to tackle the three dense prediction tasks. 
+We adapt the <a href="https://arxiv.org/abs/2103.13413">dense prediction transformer (DPT)</a> to handle variable input resolutions efficiently. Using a single dataset and a single model architecture allows us to easily train a single model with three convolution heads to perform multiple task learning. This is particularly important to combine soft foreground segmentation with depth and normal estimation, as for human-centric tasks it is needed to separate the human from the background.</p>
+</div>
+            <div class="content has-text-justified-desktop">
+                <div class="columns">
+                    <img src="img/architecture.gif"></img>
+                </div>
+                
             </div>
         </div>
+        
     </section>
     <section class="section pt-0">
         <div class="container is-max-desktop">
