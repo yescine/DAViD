@@ -3,6 +3,7 @@
 The repo accompanies the ICCV 2025 paper [DAViD: Data-efficient and Accurate Vision Models from Synthetic Data](https://microsoft.github.io/DAViD) and contains instructions for downloading and using the SynthHuman dataset and models described in the paper.
 
 ## ⚖️ License
+
 This repository contains components under different licenses:
 
 - The SynthHuman dataset is available for non-commercial use, refer to [CDLA-2.0](./LICENSE-CDLA-2.0.txt) for details.
@@ -40,13 +41,13 @@ This can be easily loaded with `np.loadtxt(path_to_camera_txt)`.
 ### Downloading the Dataset
 
 The dataset is broken in TODO zip files to make downloading easier.
-Each zip file is approximately 8.75GB in size and contains 5000 samples.
+Each zip file contains 5000 samples and has a maximum size of 8.75GB.
 To download the dataset simply run `download_data.py TARGET_DIRECTORY [--single-sample] [--single-chunk]` which will download and unzip the zips into the target folder.
 You can optionally download a single sample or a single chunk to quickly take a look at the data.
 
 ### Dataset License
-The SynthHuman dataset is licensed under the [CDLA-2.0](./LICENSE-CDLA-2.0.txt). The download script and other code is licensed under the [MIT](./LICENSE-MIT.txt).
 
+The SynthHuman dataset is licensed under the [CDLA-2.0](./LICENSE-CDLA-2.0.txt). The download script and other code is licensed under the [MIT](./LICENSE-MIT.txt).
 
 ## 🔓 Released Models
 
@@ -100,8 +101,6 @@ We release models for the following tasks:
   </tbody>
 </table>
 
-
-
 ## 🚀 Run the Demo
 
 This demo supports running:
@@ -111,6 +110,7 @@ This demo supports running:
 - Surface normal estimation
 
 To install the requirements for running demo:
+
 ```bash
 pip install -r requirement.txt
 ```
@@ -124,6 +124,7 @@ python demo.py \
   --image path/to/input.jpg \
   --multitask-model models/multitask.onnx
 ```
+
 2. Or using individual models
 
 ```bash
@@ -135,16 +136,17 @@ python demo.py \
 ```
 
 🧠 **Notes:**
+
 - The script expects ONNX models. Ensure the model paths are correct.
 - If both multi-task and individual models are provided, results from both will be shown and compared.
 - Foreground masks are used for improved visualization of depth and normals.
 
 Here is an example output image after running the demo:
 
-![](img/demo_result.png)
-
+![Example results](img/demo_result.png)
 
 ### Model License
+
 DAViD models, and codes are licensed under the [MIT](./LICENSE-MIT.txt).
 
 ## 📖 Citation
