@@ -40,8 +40,8 @@ You can optionally download a single sample or a single chunk to quickly take a 
 
 ### Dataset License
 
-The SynthHuman dataset is licensed under the [CDLA-2.0](./LICENSE-CDLA-2.0.txt).
-The download script and other code is licensed under the [MIT License](./LICENSE-MIT.txt).
+The SynthHuman dataset is licensed under the [CDLA-2.0](./licenses/LICENSE-CDLA-2.0.txt).
+The download script and other code is licensed under the [MIT License](./licenses/LICENSE-MIT.txt).
 
 ## 🔓 Released Models
 
@@ -141,7 +141,7 @@ Here is an example output image after running the demo:
 
 ### Model License
 
-DAViD models, and codes are licensed under the [MIT License](./LICENSE-MIT.txt).
+DAViD models, and codes are licensed under the [MIT License](./licenses/LICENSE-MIT.txt).
 
 ## 📖 Citation
 

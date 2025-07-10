@@ -13,7 +13,7 @@ Multi-task model for estimating relative depth, surfance normals, and soft foreg
 - **Developed by:** DAViD's authors
 - **Funded by:** Microsoft
 - **Model type:** DPT-based neural network (released as ONNX)
-- **License:** [MIT](../LICENSE-MIT.txt)
+- **License:** [MIT](../licenses/LICENSE-MIT.txt)
 
 ### Model Sources
 
