@@ -33,7 +33,6 @@ from pathlib import Path
 from typing import Optional
 from zipfile import ZipFile
 
-
 N_PARTS = 60
 
 
@@ -48,9 +47,7 @@ def extract(data_path: Path, out_path: Optional[Path] = None) -> None:
         raise ValueError(f"Unknown file type {data_path.suffix}")
 
 
-def download_synthhuman_data(
-    data_dir: Path, single_sample: bool, single_chunck: bool
-) -> None:
+def download_synthhuman_data(data_dir: Path, single_sample: bool, single_chunck: bool) -> None:
     """Download the SynthHuman dataset."""
     data_dir.mkdir(exist_ok=True, parents=True)
     zip_dir = data_dir / "SynthHuman_zip"
@@ -58,10 +55,7 @@ def download_synthhuman_data(
     parts = (
         ["SynthHuman_sample.zip"]
         if single_sample
-        else [
-            f"SynthHuman_{i:04d}.zip"
-            for i in range(0, 1 if single_chunck else N_PARTS + 1)
-        ]
+        else [f"SynthHuman_{i:04d}.zip" for i in range(0, 1 if single_chunck else N_PARTS + 1)]
     )
     for part in parts:
         out_path = zip_dir / part
@@ -106,9 +100,7 @@ def main() -> None:
         help="Only download one chunk from the dataset",
     )
     args = parser.parse_args()
-    assert not (args.single_sample and args.single_chunk), (
-        "Cannot specify both single-sample and single-chunk"
-    )
+    assert not (args.single_sample and args.single_chunk), "Cannot specify both single-sample and single-chunk"
     data_dir = Path(args.output_dir)
     download_synthhuman_data(data_dir, args.single_sample, args.single_chunk)
 

@@ -1,8 +1,30 @@
-"""Utility classes and functions for image processing and ROI operations."""
+"""Utility classes and functions for image processing and ROI operations.
 
-import numpy as np
+Copyright (c) Microsoft Corporation.
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 import cv2
-
+import numpy as np
 
 ONNX_EP = ["CUDAExecutionProvider", "CPUExecutionProvider"]
 UINT8_MAX = np.iinfo(np.uint8).max
@@ -48,9 +70,7 @@ def preprocess_img(img: np.ndarray) -> np.ndarray:
     return img.astype(np.float32)
 
 
-def prepare_image_for_model(
-    image: np.ndarray, roi_size: int = 512
-) -> tuple[np.ndarray, dict]:
+def prepare_image_for_model(image: np.ndarray, roi_size: int = 512) -> tuple[np.ndarray, dict]:
     """Prepare any input image for model inference by resizing to roi_size x roi_size.
 
     This function takes an image of any size and prepares it for a model that expects
@@ -66,7 +86,6 @@ def prepare_image_for_model(
             - preprocessed_image: Image resized to roi_size x roi_size
             - metadata_dict: Contains information needed to composite back to original size
     """
-
     # Get original shape
     original_shape = image.shape[:2]  # (height, width)
 
@@ -99,9 +118,7 @@ def prepare_image_for_model(
     while padded_image.shape[1] > roi_size * 3 and padded_image.shape[0] > roi_size * 3:
         padded_image = cv2.pyrDown(padded_image)
 
-    resized_image = cv2.resize(
-        padded_image, (roi_size, roi_size), interpolation=cv2.INTER_LINEAR
-    )
+    resized_image = cv2.resize(padded_image, (roi_size, roi_size), interpolation=cv2.INTER_LINEAR)
 
     metadata = {
         "original_shape": original_shape,
@@ -132,9 +149,7 @@ def composite_model_output_to_image(
 
     # Resize the entire model output back to the square shape
     square_shape = metadata["square_shape"]
-    resized_to_square = cv2.resize(
-        model_output, (square_shape[1], square_shape[0]), interpolation=interp_mode
-    )
+    resized_to_square = cv2.resize(model_output, (square_shape[1], square_shape[0]), interpolation=interp_mode)
 
     # Remove the padding to get back to original dimensions
     if pad_h > 0 or pad_h_extra > 0:

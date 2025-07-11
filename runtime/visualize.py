@@ -1,4 +1,27 @@
-"Visualization utilities for images, masks, and depth maps."
+"""Visualization utilities for images, masks, and depth maps.
+
+Copyright (c) Microsoft Corporation.
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
 
 from typing import Optional
 
@@ -33,9 +56,7 @@ def visualize_foreground(
     return composite_image
 
 
-def visualize_normal_maps(
-    frame: np.ndarray, normals: np.ndarray, mask: Optional[np.ndarray] = None
-) -> np.ndarray:
+def visualize_normal_maps(frame: np.ndarray, normals: np.ndarray, mask: Optional[np.ndarray] = None) -> np.ndarray:
     """Visualize normal map and overlay it on the original image if soft mask is provided."""
     # check that dimensions of frame and normals and mask if exists are the same
     if frame.shape[0:2] != normals.shape[0:2]:
@@ -76,15 +97,10 @@ def visualize_relative_depth_map(
         min_val, max_val = np.min(depth_foreground), np.max(depth_foreground)
 
         depth_normalized_foreground = 1 - (
-            (depth_foreground - min_val)
-            / (max_val - min_val if max_val != min_val else 1e-8)
+            (depth_foreground - min_val) / (max_val - min_val if max_val != min_val else 1e-8)
         )
-        depth_normalized_foreground = (depth_normalized_foreground * 255.0).astype(
-            np.uint8
-        )
-        depth_colored_foreground = cv2.applyColorMap(
-            depth_normalized_foreground, cv2.COLORMAP_INFERNO
-        )
+        depth_normalized_foreground = (depth_normalized_foreground * 255.0).astype(np.uint8)
+        depth_colored_foreground = cv2.applyColorMap(depth_normalized_foreground, cv2.COLORMAP_INFERNO)
         processed_depth[foreground] = depth_colored_foreground.reshape(-1, 3)
         mask = np.clip(mask[..., None], 0, 1).astype(np.float32)
         mask = np.repeat(mask, 3, axis=-1)
@@ -94,9 +110,7 @@ def visualize_relative_depth_map(
         ).astype(np.uint8)
     else:
         min_val, max_val = np.min(depth), np.max(depth)
-        depth_normalized = 1 - (
-            (depth - min_val) / (max_val - min_val if max_val != min_val else 1e-8)
-        )
+        depth_normalized = 1 - ((depth - min_val) / (max_val - min_val if max_val != min_val else 1e-8))
         depth_normalized = (depth_normalized * 255.0).astype(np.uint8)
         vis_depth = cv2.applyColorMap(depth_normalized, cv2.COLORMAP_INFERNO)
 
@@ -105,9 +119,7 @@ def visualize_relative_depth_map(
 
 def create_concatenated_display(visualizations: list[np.ndarray], labels: list[str], downscale: int = 1):
     """Create a horizontally concatenated display with labels."""
-    assert len(visualizations) == len(labels), (
-        "Number of visualizations must match number of labels"
-    )
+    assert len(visualizations) == len(labels), "Number of visualizations must match number of labels"
     # Resize all images to same height for concatenation
     target_height = visualizations[0].shape[0] // downscale  # Make smaller for display
 
@@ -124,7 +136,7 @@ def create_concatenated_display(visualizations: list[np.ndarray], labels: list[s
     color = (255, 255, 255)
     thickness = 2
 
-    for (vis, label) in zip(resized_vis, labels):
+    for vis, label in zip(resized_vis, labels):
         cv2.putText(vis, label, (10, 30), font, font_scale, color, thickness)
 
     return cv2.hconcat(resized_vis)

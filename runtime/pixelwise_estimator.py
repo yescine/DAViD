@@ -1,21 +1,40 @@
-"""Runtime core for pixelwise estimators."""
+"""Runtime core for pixelwise estimators.
+
+Copyright (c) Microsoft Corporation.
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
 
 from pathlib import Path
 from typing import Optional, Union
 
 import numpy as np
 from onnxruntime import InferenceSession
-
-from utils import preprocess_img, prepare_image_for_model
-from utils import ONNX_EP, ModelNotFoundError
+from utils import ONNX_EP, ModelNotFoundError, prepare_image_for_model, preprocess_img
 
 
 class RuntimeSession(InferenceSession):
     """The runtime session."""
 
-    def __init__(
-        self, onnx_model: Union[str, Path], providers: Optional[list[str]] = None
-    ) -> None:
+    def __init__(self, onnx_model: Union[str, Path], providers: Optional[list[str]] = None) -> None:
         """Create a runtime session.
 
         Args:
@@ -39,9 +58,7 @@ class RuntimeSession(InferenceSession):
 class PixelwiseEstimator:
     """Given an input image, estimates the pixelwise (dense) output (e.g., normal map, depth map, etc.)."""
 
-    def __init__(
-        self, onnx_model: Union[str, Path], providers: Optional[list[str]] = None
-    ):
+    def __init__(self, onnx_model: Union[str, Path], providers: Optional[list[str]] = None):
         """Creates a pixelwise estimator.
 
         Arguments:
@@ -54,9 +71,7 @@ class PixelwiseEstimator:
             ModelError: If the provided model has an undeclared or incorrect roi type.
         """
         if not isinstance(onnx_model, (str, Path)):
-            raise TypeError(
-                f"onnx_model should be a string or Path, got {type(onnx_model)}"
-            )
+            raise TypeError(f"onnx_model should be a string or Path, got {type(onnx_model)}")
         onnx_model = Path(onnx_model)
         if not onnx_model.exists():
             raise ModelNotFoundError(f"model {onnx_model} does not exist")
@@ -81,9 +96,7 @@ class PixelwiseEstimator:
         input_tensor = onnx_sess.get_inputs()[0]
         input_name = input_tensor.name
         input_shape = input_tensor.shape
-        input_img = np.transpose(input_img, (2, 0, 1)).reshape(
-            1, *input_shape[1:]
-        )  # HWC to BCHW
+        input_img = np.transpose(input_img, (2, 0, 1)).reshape(1, *input_shape[1:])  # HWC to BCHW
         pred_onnx = onnx_sess.run(None, {input_name: input_img.astype(np.float32)})
 
         return pred_onnx

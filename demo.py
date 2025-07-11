@@ -1,25 +1,51 @@
-"""Demo script for depth estimation, foreground segmentation, and surface normal estimation."""
+"""Demo script for depth estimation, foreground segmentation, and surface normal estimation.
 
-import cv2
-import sys
+Copyright (c) Microsoft Corporation.
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
+import argparse
 import os
+import sys
+from typing import Optional
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "runtime"))
 
+import cv2
+import numpy as np
 from depth_estimator import RelativeDepthEstimator
+from multi_task_estimator import MultiTaskEstimator
 from soft_foreground_segmenter import SoftForegroundSegmenter
 from surface_normal_estimator import SurfaceNormalEstimator
-from multi_task_estimator import MultiTaskEstimator
-import argparse
 from visualize import (
     create_concatenated_display,
-    visualize_relative_depth_map,
     visualize_foreground,
     visualize_normal_maps,
+    visualize_relative_depth_map,
 )
 
 
 def main():
+    """Main function to run the demo."""
     # Parse command line arguments
     parser = argparse.ArgumentParser(
         description="Demo script for depth estimation, foreground segmentation, and surface normal estimation"
@@ -35,12 +61,8 @@ def main():
 
     # Individual model paths (if using individual models)
     parser.add_argument("--depth-model", help="Path to depth estimation ONNX model")
-    parser.add_argument(
-        "--foreground-model", help="Path to foreground segmentation ONNX model"
-    )
-    parser.add_argument(
-        "--normal-model", help="Path to surface normal estimation ONNX model"
-    )
+    parser.add_argument("--foreground-model", help="Path to foreground segmentation ONNX model")
+    parser.add_argument("--normal-model", help="Path to surface normal estimation ONNX model")
 
     parser.add_argument("--output_path", help="Save result to a path (optional)")
     parser.add_argument(
@@ -55,28 +77,16 @@ def main():
         print(f"Error: Image not found: {args.image}")
         return
 
-    if not args.multitask_model and (
-        not args.depth_model or not os.path.exists(args.depth_model)
-    ):
-        print(
-            f"Error: Either multi-task model or individual depth model: {args.depth_model}"
-        )
+    if not args.multitask_model and (not args.depth_model or not os.path.exists(args.depth_model)):
+        print(f"Error: Either multi-task model or individual depth model: {args.depth_model}")
         return
 
-    if not args.multitask_model and (
-        not args.foreground_model or not os.path.exists(args.foreground_model)
-    ):
-        print(
-            f"Error: Either multi-task model or individual foreground model: {args.foreground_model}"
-        )
+    if not args.multitask_model and (not args.foreground_model or not os.path.exists(args.foreground_model)):
+        print(f"Error: Either multi-task model or individual foreground model: {args.foreground_model}")
         return
 
-    if not args.multitask_model and (
-        not args.normal_model or not os.path.exists(args.normal_model)
-    ):
-        print(
-            f"Error: Either multi-task model or individual normal model: {args.normal_model}"
-        )
+    if not args.multitask_model and (not args.normal_model or not os.path.exists(args.normal_model)):
+        print(f"Error: Either multi-task model or individual normal model: {args.normal_model}")
         return
 
     if args.multitask_model and not os.path.exists(args.multitask_model):
@@ -101,82 +111,83 @@ def main():
 
     if has_individual_models:
         print("Using individual models...")
-        results["individual"] = process_with_individual_models(image, args)
+        results["individual"] = process_with_individual_models(
+            image, args.depth_model, args.foreground_model, args.normal_model
+        )
     if args.multitask_model:
         print("Using multi-task model...")
-        results["multitask"] = process_with_multitask_model(image, args)
+        results["multitask"] = process_with_multitask_model(image, args.multitask_model)
 
-    display_results(image, results, args)
+    display_results(image, results, args.output_path, args.headless)
 
 
-def process_with_individual_models(image, args):
+def process_with_individual_models(
+    image: np.ndarray,
+    depth_model: Optional[str] = None,
+    foreground_model: Optional[str] = None,
+    normal_model: Optional[str] = None,
+):
     """Process image using individual models for each task."""
     results = {}
 
-    if args.depth_model:
+    if depth_model:
         print("Estimating depth map...")
-        depth_estimator = RelativeDepthEstimator(
-            onnx_model=args.depth_model, is_inverse=True
-        )
+        depth_estimator = RelativeDepthEstimator(onnx_model=depth_model, is_inverse=True)
         results["depth"] = depth_estimator.estimate_relative_depth(image)
 
-    if args.foreground_model:
+    if foreground_model:
         print("Estimating foreground segmentation...")
-        foreground_segmenter = SoftForegroundSegmenter(onnx_model=args.foreground_model)
-        results["foreground"] = foreground_segmenter.estimate_foreground_segmentation(
-            image
-        )
+        foreground_segmenter = SoftForegroundSegmenter(onnx_model=foreground_model)
+        results["foreground"] = foreground_segmenter.estimate_foreground_segmentation(image)
 
-    if args.normal_model:
+    if normal_model:
         print("Estimating surface normals...")
-        normal_estimator = SurfaceNormalEstimator(onnx_model=args.normal_model)
+        normal_estimator = SurfaceNormalEstimator(onnx_model=normal_model)
         results["normal"] = normal_estimator.estimate_normal(image)
 
     return results
 
 
-def process_with_multitask_model(image, args):
+def process_with_multitask_model(image: np.ndarray, multi_task: bool):
     """Process image using multi-task model."""
-    multitask_estimator = MultiTaskEstimator(
-        onnx_model=args.multitask_model, is_inverse_depth=False
-    )
+    multitask_estimator = MultiTaskEstimator(onnx_model=multi_task, is_inverse_depth=False)
     return multitask_estimator.estimate_all_tasks(image)
 
 
-def display_results(image, results, args):
+def display_results(
+    image: np.ndarray,
+    results: dict[str, np.ndarray],
+    output_path: Optional[str] = None,
+    headless: bool = False,
+):
     """Display results."""
-
     if "individual" in results:
-        individual_result = display_single_model_results(
-            image, results["individual"], prefix="Individual"
-        )
-        if args.output_path:
+        individual_result = display_single_model_results(image, results["individual"], prefix="Individual")
+        if output_path:
             cv2.imwrite(
-                os.path.join(args.output_path, "individual_results.png"),
+                os.path.join(output_path, "individual_results.png"),
                 individual_result,
             )
     if "multitask" in results:
         print("Displaying multi-task model results...")
         multitask_results = results["multitask"]
-        multitask_result = display_single_model_results(
-            image, multitask_results, prefix="Multi-task"
-        )
-        if args.output_path:
+        multitask_result = display_single_model_results(image, multitask_results, prefix="Multi-task")
+        if output_path:
             cv2.imwrite(
-                os.path.join(args.output_path, "multitask_results.png"),
+                os.path.join(output_path, "multitask_results.png"),
                 multitask_result,
             )
 
     if "individual" in results and "multitask" in results:
         if len(results["individual"]) == len(results["multitask"]):
             compare_results = cv2.vconcat([individual_result, multitask_result])
-            if args.output_path:
+            if output_path:
                 cv2.imwrite(
-                    os.path.join(args.output_path, "comparison_results.png"),
+                    os.path.join(output_path, "comparison_results.png"),
                     compare_results,
                 )
 
-    if not args.headless:
+    if not headless:
         if (
             "individual" in results
             and "multitask" in results
@@ -200,9 +211,7 @@ def display_single_model_results(image, model_results, prefix=""):
     foreground_mask = model_results.get("foreground")
 
     if "depth" in model_results:
-        depth_vis = visualize_relative_depth_map(
-            image, model_results["depth"], foreground_mask
-        )
+        depth_vis = visualize_relative_depth_map(image, model_results["depth"], foreground_mask)
         visualizations.append(depth_vis)
         labels.append(f"{prefix}/Depth")
 
@@ -212,9 +221,7 @@ def display_single_model_results(image, model_results, prefix=""):
         labels.append(f"{prefix}/Foreground")
 
     if "normal" in model_results:
-        normal_vis = visualize_normal_maps(
-            image, model_results["normal"], foreground_mask
-        )
+        normal_vis = visualize_normal_maps(image, model_results["normal"], foreground_mask)
         visualizations.append(normal_vis)
         labels.append(f"{prefix}/Normals")
 
