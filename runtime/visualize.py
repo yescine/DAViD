@@ -56,7 +56,10 @@ def visualize_normal_maps(
 
 
 def visualize_relative_depth_map(
-    frame: np.ndarray, depth: np.ndarray, mask: Optional[np.ndarray] = None
+    frame: np.ndarray,
+    depth: np.ndarray,
+    mask: Optional[np.ndarray] = None,
+    alpha_threshold: float = 0.0,
 ) -> np.ndarray:
     """Visualize relative depth map and overlay it on the original image if soft mask is provided."""
     processed_depth = np.full((frame.shape[0], frame.shape[1], 3), 0, dtype=np.uint8)
@@ -65,11 +68,13 @@ def visualize_relative_depth_map(
     if mask is not None and frame.shape[0:2] != mask.shape[0:2]:
         raise ValueError("The dimensions of 'frame' and 'mask' must match.")
     if mask is not None:
-        foreground = mask > 0
+        mask[depth == 65504] = 0  # account for invalid depth values in GT images
+        foreground = mask > alpha_threshold
         if not np.any(foreground):
             return processed_depth
         depth_foreground = depth[foreground]
         min_val, max_val = np.min(depth_foreground), np.max(depth_foreground)
+
         depth_normalized_foreground = 1 - (
             (depth_foreground - min_val)
             / (max_val - min_val if max_val != min_val else 1e-8)
@@ -96,3 +101,30 @@ def visualize_relative_depth_map(
         vis_depth = cv2.applyColorMap(depth_normalized, cv2.COLORMAP_INFERNO)
 
     return vis_depth
+
+
+def create_concatenated_display(visualizations: list[np.ndarray], labels: list[str], downscale: int = 1):
+    """Create a horizontally concatenated display with labels."""
+    assert len(visualizations) == len(labels), (
+        "Number of visualizations must match number of labels"
+    )
+    # Resize all images to same height for concatenation
+    target_height = visualizations[0].shape[0] // downscale  # Make smaller for display
+
+    resized_vis = []
+    for vis in visualizations:
+        aspect_ratio = vis.shape[1] / vis.shape[0]
+        target_width = int(target_height * aspect_ratio)
+        resized = cv2.resize(vis, (target_width, target_height))
+        resized_vis.append(resized)
+
+    # Add labels
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    font_scale = 0.7
+    color = (255, 255, 255)
+    thickness = 2
+
+    for (vis, label) in zip(resized_vis, labels):
+        cv2.putText(vis, label, (10, 30), font, font_scale, color, thickness)
+
+    return cv2.hconcat(resized_vis)

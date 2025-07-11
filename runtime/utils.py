@@ -48,7 +48,6 @@ def preprocess_img(img: np.ndarray) -> np.ndarray:
     return img.astype(np.float32)
 
 
-
 def prepare_image_for_model(
     image: np.ndarray, roi_size: int = 512
 ) -> tuple[np.ndarray, dict]:

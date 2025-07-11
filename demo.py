@@ -12,6 +12,7 @@ from surface_normal_estimator import SurfaceNormalEstimator
 from multi_task_estimator import MultiTaskEstimator
 import argparse
 from visualize import (
+    create_concatenated_display,
     visualize_relative_depth_map,
     visualize_foreground,
     visualize_normal_maps,
@@ -217,33 +218,9 @@ def display_single_model_results(image, model_results, prefix=""):
         visualizations.append(normal_vis)
         labels.append(f"{prefix}/Normals")
 
-    result = create_concatenated_display(visualizations, labels)
+    result = create_concatenated_display(visualizations, labels, downscale=2)
 
     return result
-
-
-def create_concatenated_display(visualizations, labels):
-    """Create a horizontally concatenated display with labels."""
-    # Resize all images to same height for concatenation
-    target_height = visualizations[0].shape[0] // 2  # Make smaller for display
-
-    resized_vis = []
-    for vis in visualizations:
-        aspect_ratio = vis.shape[1] / vis.shape[0]
-        target_width = int(target_height * aspect_ratio)
-        resized = cv2.resize(vis, (target_width, target_height))
-        resized_vis.append(resized)
-
-    # Add labels
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    font_scale = 0.7
-    color = (255, 255, 255)
-    thickness = 2
-
-    for i, (vis, label) in enumerate(zip(resized_vis, labels)):
-        cv2.putText(vis, label, (10, 30), font, font_scale, color, thickness)
-
-    return cv2.hconcat(resized_vis)
 
 
 if __name__ == "__main__":
