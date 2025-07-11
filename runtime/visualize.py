@@ -89,8 +89,9 @@ def visualize_relative_depth_map(
     if mask is not None and frame.shape[0:2] != mask.shape[0:2]:
         raise ValueError("The dimensions of 'frame' and 'mask' must match.")
     if mask is not None:
-        mask[depth == 65504] = 0  # account for invalid depth values in GT images
-        foreground = mask > alpha_threshold
+        foreground = np.logical_and(
+            mask > alpha_threshold, depth != 65504
+        )  # account for invalid depth values in GT images
         if not np.any(foreground):
             return processed_depth
         depth_foreground = depth[foreground]

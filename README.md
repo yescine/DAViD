@@ -8,7 +8,7 @@ The repo accompanies the ICCV 2025 paper [DAViD: Data-efficient and Accurate Vis
 
 The SynthHuman dataset contains approximately 300,000 images of synthetic humans with ground-truth annotations for foreground alpha masks, absolute depth, surface normals and camera intrinsics. There are approximately 100,000 images for each of three camera scenarios: face, upper-body and full-body. The data is generated using the latest version of our synthetic data generation pipeline, which has been used to create a number of datasets: [Face Synthetics](https://microsoft.github.io/FaceSynthetics/), [SimpleEgo](https://aka.ms/SimpleEgo) and [SynthMoCap](https://aka.ms/SynthMoCap). Ground-truth annotations are per-pixel with perfect accuracy due to the graphics-based rendering pipeline:
 
-<img src="img/GT_annotations.jpg" alt="GT Annotations" width="50%"/>
+<img src="img/face_gt.jpg" alt="GT Annotations" width="49%"/> <img src="img/body_gt.jpg" alt="GT Annotations" width="49%"/>
 
 ### Data Format
 
@@ -40,6 +40,11 @@ Each zip file contains 5000 samples and has a maximum size of 8.75GB.
 The total download size is approximately 330GB.
 To download the dataset simply run `download_data.py TARGET_DIRECTORY [--single-sample] [--single-chunk]` which will download and unzip the zips into the target folder.
 You can optionally download a single sample or a single chunk to quickly take a look at the data.
+
+### Loading the Dataset
+
+You can visualize samples from the dataset using `visualize_data.py SYNTHHUMAN_DIRECTORY [--start-idx N]`.
+This script shows examples of how to load the image files correctly and display the data.
 
 ### Dataset License
 
