@@ -61,8 +61,12 @@ def main():
 
     # Individual model paths (if using individual models)
     parser.add_argument("--depth-model", help="Path to depth estimation ONNX model")
-    parser.add_argument("--foreground-model", help="Path to foreground segmentation ONNX model")
-    parser.add_argument("--normal-model", help="Path to surface normal estimation ONNX model")
+    parser.add_argument(
+        "--foreground-model", help="Path to foreground segmentation ONNX model"
+    )
+    parser.add_argument(
+        "--normal-model", help="Path to surface normal estimation ONNX model"
+    )
 
     parser.add_argument("--output_path", help="Save result to a path (optional)")
     parser.add_argument(
@@ -77,20 +81,25 @@ def main():
         print(f"Error: Image not found: {args.image}")
         return
 
-    if not args.multitask_model and (not args.depth_model or not os.path.exists(args.depth_model)):
-        print(f"Error: Either multi-task model or individual depth model: {args.depth_model}")
-        return
+    multitask_available = args.multitask_model and os.path.exists(args.multitask_model)
+    depth_available = args.depth_model and os.path.exists(args.depth_model)
+    foreground_available = args.foreground_model and os.path.exists(
+        args.foreground_model
+    )
+    normal_available = args.normal_model and os.path.exists(args.normal_model)
 
-    if not args.multitask_model and (not args.foreground_model or not os.path.exists(args.foreground_model)):
-        print(f"Error: Either multi-task model or individual foreground model: {args.foreground_model}")
-        return
-
-    if not args.multitask_model and (not args.normal_model or not os.path.exists(args.normal_model)):
-        print(f"Error: Either multi-task model or individual normal model: {args.normal_model}")
-        return
-
-    if args.multitask_model and not os.path.exists(args.multitask_model):
-        print(f"Error: Multi-task model not found: {args.multitask_model}")
+    if not (
+        multitask_available
+        or depth_available
+        or foreground_available
+        or normal_available
+    ):
+        print("Error: At least one model must be provided and exist.")
+        print("Available options:")
+        print("  --multitask-model: Multi-task model for all tasks")
+        print("  --depth-model: Individual depth estimation model")
+        print("  --foreground-model: Individual foreground segmentation model")
+        print("  --normal-model: Individual surface normal estimation model")
         return
 
     if args.output_path and not os.path.exists(args.output_path):
@@ -132,13 +141,17 @@ def process_with_individual_models(
 
     if depth_model:
         print("Estimating depth map...")
-        depth_estimator = RelativeDepthEstimator(onnx_model=depth_model, is_inverse=True)
+        depth_estimator = RelativeDepthEstimator(
+            onnx_model=depth_model, is_inverse=True
+        )
         results["depth"] = depth_estimator.estimate_relative_depth(image)
 
     if foreground_model:
         print("Estimating foreground segmentation...")
         foreground_segmenter = SoftForegroundSegmenter(onnx_model=foreground_model)
-        results["foreground"] = foreground_segmenter.estimate_foreground_segmentation(image)
+        results["foreground"] = foreground_segmenter.estimate_foreground_segmentation(
+            image
+        )
 
     if normal_model:
         print("Estimating surface normals...")
@@ -150,7 +163,9 @@ def process_with_individual_models(
 
 def process_with_multitask_model(image: np.ndarray, multi_task: bool):
     """Process image using multi-task model."""
-    multitask_estimator = MultiTaskEstimator(onnx_model=multi_task, is_inverse_depth=False)
+    multitask_estimator = MultiTaskEstimator(
+        onnx_model=multi_task, is_inverse_depth=False
+    )
     return multitask_estimator.estimate_all_tasks(image)
 
 
@@ -162,7 +177,9 @@ def display_results(
 ):
     """Display results."""
     if "individual" in results:
-        individual_result = display_single_model_results(image, results["individual"], prefix="Individual")
+        individual_result = display_single_model_results(
+            image, results["individual"], prefix="Individual"
+        )
         if output_path:
             cv2.imwrite(
                 os.path.join(output_path, "individual_results.png"),
@@ -171,7 +188,9 @@ def display_results(
     if "multitask" in results:
         print("Displaying multi-task model results...")
         multitask_results = results["multitask"]
-        multitask_result = display_single_model_results(image, multitask_results, prefix="Multi-task")
+        multitask_result = display_single_model_results(
+            image, multitask_results, prefix="Multi-task"
+        )
         if output_path:
             cv2.imwrite(
                 os.path.join(output_path, "multitask_results.png"),
@@ -211,7 +230,9 @@ def display_single_model_results(image, model_results, prefix=""):
     foreground_mask = model_results.get("foreground")
 
     if "depth" in model_results:
-        depth_vis = visualize_relative_depth_map(image, model_results["depth"], foreground_mask)
+        depth_vis = visualize_relative_depth_map(
+            image, model_results["depth"], foreground_mask
+        )
         visualizations.append(depth_vis)
         labels.append(f"{prefix}/Depth")
 
@@ -221,7 +242,9 @@ def display_single_model_results(image, model_results, prefix=""):
         labels.append(f"{prefix}/Foreground")
 
     if "normal" in model_results:
-        normal_vis = visualize_normal_maps(image, model_results["normal"], foreground_mask)
+        normal_vis = visualize_normal_maps(
+            image, model_results["normal"], foreground_mask
+        )
         visualizations.append(normal_vis)
         labels.append(f"{prefix}/Normals")
 
