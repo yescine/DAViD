@@ -48,8 +48,8 @@ This script shows examples of how to load the image files correctly and display 
 
 ### Dataset License
 
-The SynthHuman dataset is licensed under the [CDLA-2.0](./licenses/LICENSE-CDLA-2.0.txt).
-The download and visualization scripts are licensed under the [MIT License](./licenses/LICENSE-MIT.txt).
+The SynthHuman dataset is licensed under the [CDLA-2.0](./LICENSE-CDLA-2.0.txt).
+The download and visualization scripts are licensed under the [MIT License](./LICENSE-MIT.txt).
 
 ## 🔓 Released Models
 
@@ -149,7 +149,7 @@ Here is an example output image after running the demo:
 
 ### Model License
 
-DAViD models and runtime code are licensed under the [MIT License](./licenses/LICENSE-MIT.txt).
+DAViD models and runtime code are licensed under the [MIT License](./LICENSE-MIT.txt).
 
 ## 📖 Citation
 
