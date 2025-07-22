@@ -1,7 +1,7 @@
 """Helper script to download the SynthHuman dataset.
 
 This python file is licensed under the MIT license (see below).
-The SynthHuman dataset is license under the CDLA-2.0  license (https://cdla.dev/permissive-2-0/).
+The SynthHuman dataset is licensed under the CDLA-2.0  license (https://cdla.dev/permissive-2-0/).
 
 Copyright (c) Microsoft Corporation.
 
