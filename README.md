@@ -156,11 +156,13 @@ DAViD models and runtime code are licensed under the [MIT License](./licenses/LI
 If you use the SynthHuman Dataset or any of the DAViD models in your research, please cite the following:
 
 ```bibtex
-@inproceedings{saleh2025david,
+@misc{saleh2025david,
     title={{DAViD}: Data-efficient and Accurate Vision Models from Synthetic Data},
-    author={Saleh, Fatemeh and Aliakbarian, Sadegh and Hewitt, Charlie and Petikam, Lohit and Xiao, Xian and Criminisi, Antonio and Cashman, Thomas J. and Baltru{\v{s}}aitis, Tadas},
-    booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    author={Fatemeh Saleh and Sadegh Aliakbarian and Charlie Hewitt and Lohit Petikam and Xiao-Xian and Antonio Criminisi and Thomas J. Cashman and Tadas Baltrušaitis},
     year={2025},
-    month={October}
+    eprint={2507.15365},
+    archivePrefix={arXiv},
+    primaryClass={cs.CV},
+    url={https://arxiv.org/abs/2507.15365},
 }
 ```
