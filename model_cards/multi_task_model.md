@@ -17,8 +17,8 @@ Multi-task model for estimating relative depth, surfance normals, and soft foreg
 
 ### Model Sources
 
-- **Repository:** [aka.ms/DAViD](aka.ms/DAViD)
-- **Paper:**  [Saleh et al., DAViD: Data-efficient and Accurate Vision Models from Synthetic Data, ICCV 2025]()
+- **Repository:** [https://github.com/microsoft/DAViD](https://github.com/microsoft/DAViD)
+- **Paper:**  [Saleh et al., DAViD: Data-efficient and Accurate Vision Models from Synthetic Data, ICCV 2025](https://arxiv.org/pdf/2507.15365)
 
 ## Uses
 
