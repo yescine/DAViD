@@ -55,7 +55,7 @@ def download_synthhuman_data(data_dir: Path, single_sample: bool, single_chunck:
     parts = (
         ["SynthHuman_sample.zip"]
         if single_sample
-        else [f"SynthHuman_{i:04d}.zip" for i in range(0, 1 if single_chunck else N_PARTS + 1)]
+        else [f"SynthHuman_{i:04d}.zip" for i in range(0, 1 if single_chunck else N_PARTS)]
     )
     for part in parts:
         out_path = zip_dir / part
