@@ -17,12 +17,13 @@ import argparse
 import os
 import sys
 from typing import Optional, Dict
+import json
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "runtime"))
 
 import cv2
 import numpy as np
-from tqdm import tqdm  # NEW
+from tqdm import tqdm
 
 from depth_estimator import RelativeDepthEstimator
 from multi_task_estimator import MultiTaskEstimator
@@ -54,6 +55,30 @@ def list_images(folder: str):
 
 def ensure_dir(path: str):
     os.makedirs(path, exist_ok=True)
+    
+def _save_raw_json(arr: np.ndarray, out_path: str, *,
+                   task: str, mode: str, src_image: Optional[str] = None):
+    """
+    Save a numpy array to JSON with minimal metadata.
+    NOTE: JSON can be large for big images; consider .npy for compact storage.
+    """
+    # squeeze trailing singleton channel if present (e.g., HxWx1 -> HxW)
+    if arr.ndim == 3 and arr.shape[-1] == 1:
+        arr = arr[..., 0]
+
+    payload = {
+        "image": os.path.basename(src_image) if src_image else None,
+        "task": task,
+        "mode": mode,
+        "shape": list(arr.shape),
+        "dtype": str(arr.dtype),
+        "min": float(np.nanmin(arr)) if arr.size else None,
+        "max": float(np.nanmax(arr)) if arr.size else None,
+        "data": arr.tolist(),
+    }
+    with open(out_path, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2, sort_keys=False)
+
 
 
 def save_task_visuals(
@@ -62,33 +87,54 @@ def save_task_visuals(
     out_dir: str,
     stem: str,
     mode_suffix: str,  # "individual" or "multitask"
+    *,
+    save_raw: bool = False,         # NEW
+    src_image_path: Optional[str] = None,  # NEW
 ):
     """
     Given raw task arrays in `results` (keys: depth, foreground, normal),
     produce visualizations and write one PNG per task:
       <out_dir>/<stem>_<task>_<mode_suffix>.png
+    If save_raw is True, also writes JSON:
+      <out_dir>/<stem>_<task>_<mode_suffix>.json
     """
     fg_mask = results.get("foreground")
 
     if "depth" in results:
         depth_vis = visualize_relative_depth_map(image_bgr, results["depth"], fg_mask)
-        cv2.imwrite(
-            os.path.join(out_dir, f"{stem}_depth_{mode_suffix}.png"), depth_vis
-        )
+        cv2.imwrite(os.path.join(out_dir, f"{stem}_depth_{mode_suffix}.png"), depth_vis)
+        if save_raw:
+            _save_raw_json(
+                results["depth"],
+                os.path.join(out_dir, f"{stem}_depth_{mode_suffix}.json"),
+                task="depth",
+                mode=mode_suffix,
+                src_image=src_image_path,
+            )
 
     if "foreground" in results:
         foreground_vis = visualize_foreground(image_bgr, results["foreground"])
-        cv2.imwrite(
-            os.path.join(out_dir, f"{stem}_foreground_{mode_suffix}.png"),
-            foreground_vis,
-        )
+        cv2.imwrite(os.path.join(out_dir, f"{stem}_foreground_{mode_suffix}.png"), foreground_vis)
+        if save_raw:
+            _save_raw_json(
+                results["foreground"],
+                os.path.join(out_dir, f"{stem}_foreground_{mode_suffix}.json"),
+                task="foreground",
+                mode=mode_suffix,
+                src_image=src_image_path,
+            )
 
     if "normal" in results:
         normal_vis = visualize_normal_maps(image_bgr, results["normal"], fg_mask)
-        cv2.imwrite(
-            os.path.join(out_dir, f"{stem}_normal_{mode_suffix}.png"), normal_vis
-        )
-
+        cv2.imwrite(os.path.join(out_dir, f"{stem}_normal_{mode_suffix}.png"), normal_vis)
+        if save_raw:
+            _save_raw_json(
+                results["normal"],
+                os.path.join(out_dir, f"{stem}_normal_{mode_suffix}.json"),
+                task="normal",
+                mode=mode_suffix,
+                src_image=src_image_path,
+            )
 
 def process_with_individual_models(
     image: np.ndarray,
@@ -140,6 +186,7 @@ def main():
 
     # Progress control (NEW)
     parser.add_argument("--no-progress", action="store_true", help="Disable tqdm progress bar.")
+    parser.add_argument("--raw-result", action="store_true", help="Also save raw arrays to JSON for each produced task.")
 
     args = parser.parse_args()
 
@@ -204,14 +251,18 @@ def main():
                 normal_model=args.normal_model if normal_available else None,
             )
             if results_ind:
-                save_task_visuals(image, results_ind, args.output_dir, stem, "individual")
-
+                save_task_visuals(
+                    image, results_ind, args.output_dir, stem, "individual",
+                    save_raw=args.raw_result, src_image_path=img_path  # NEW
+                )
         # Multi-task model
         if multitask_available:
             results_multi = process_with_multitask_model(image, args.multitask_model)
             if results_multi:
-                save_task_visuals(image, results_multi, args.output_dir, stem, "multitask")
-
+                save_task_visuals(
+                    image, results_multi, args.output_dir, stem, "multitask",
+                    save_raw=args.raw_result, src_image_path=img_path  # NEW
+                )
     # Make sure the bar finishes on its own line
     if not disable_bar:
         pbar.close()
