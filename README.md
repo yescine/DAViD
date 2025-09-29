@@ -16,11 +16,11 @@ The dataset contains 298008 samples.
 There first 98040 samples feature the face, the next 99976 sample feature the full body and the final 99992 samples feature the upper body.
 Each sample is made up of:
 
-- `rgb_0000000.png` - RGB image
-- `alpha_0000000.png` - foreground alpha mask
-- `depth_0000000.exr` - absolute z-depth image in cm
-- `normal_0000000.exr` - surface normal image (XYZ)
-- `cam_0000000.txt` - camera intrinsics (see below)
+* `rgb_0000000.png` - RGB image
+* `alpha_0000000.png` - foreground alpha mask
+* `depth_0000000.exr` - absolute z-depth image in cm
+* `normal_0000000.exr` - surface normal image (XYZ)
+* `cam_0000000.txt` - camera intrinsics (see below)
 
 The camera text file includes the standard intrinsic matrix:
 
@@ -54,6 +54,7 @@ The download and visualization scripts are licensed under the [MIT License](./LI
 ## 🔓 Released Models
 
 We release models for the following tasks:
+
 <table>
   <thead>
     <tr>
@@ -107,9 +108,9 @@ We release models for the following tasks:
 
 This demo supports running:
 
-- Relative depth estimation
-- Soft foreground segmentation
-- Surface normal estimation
+* Relative depth estimation
+* Soft foreground segmentation
+* Surface normal estimation
 
 To install the requirements for running demo:
 
@@ -117,7 +118,7 @@ To install the requirements for running demo:
 pip install -r requirement.txt
 ```
 
-You can use either run:
+You can either run:
 
 1. A multi-task model that performs all tasks simultaneously
 
@@ -139,13 +140,37 @@ python demo.py \
 
 🧠 **Notes:**
 
-- The script expects ONNX models. Ensure the model paths are correct.
-- If both multi-task and individual models are provided, results from both will be shown and compared.
-- Foreground masks are used for improved visualization of depth and normals.
+* The script expects ONNX models. Ensure the model paths are correct.
+* If both multi-task and individual models are provided, results from both will be shown and compared.
+* Foreground masks are used for improved visualization of depth and normals.
 
 Here is an example output image after running the demo:
 
 ![Example results](img/demo_result.png)
+
+### 📦 Batch Processing with Progress Bar
+
+We also provide a batch script `batch_demo.py` for processing a whole directory of images.
+
+Example usage:
+
+```bash
+python batch_demo.py \
+  --img_dir ./data \
+  --output_dir ./outputs \
+  --multitask-model models/multitask.onnx
+```
+
+Options:
+
+* `--img_dir`: Directory containing input images (default: `./data`).
+* `--output_dir`: Directory to save outputs (default: `./outputs`).
+* `--image`: Process a single image (overrides `--img_dir`).
+* `--multitask-model`: Path to a multi-task ONNX model.
+* `--depth-model`, `--foreground-model`, `--normal-model`: Individual model paths.
+* `--no-progress`: Disable the tqdm progress bar (useful for CI or logging environments).
+
+✅ By default, a **tqdm** progress bar is displayed during batch runs, showing per-image processing status. Use `--no-progress` to silence it.
 
 ### Model License
 
